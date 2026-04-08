@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: crypto-transaction-monitoring
+  datasource:
+    url: jdbc:postgresql://localhost:5432/crypto_db
+    username: postgres
+    password: password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
