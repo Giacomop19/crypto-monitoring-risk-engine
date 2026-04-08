@@ -1,10 +1,9 @@
 package com._sculture.crypto_transaction_monitoring.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.Map;
 
 @Entity
 @Getter
@@ -17,6 +16,11 @@ public class Wallet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String address;
-    private Double balance;
+
+    @ElementCollection
+    @CollectionTable(name = "wallet")
+    @MapKeyColumn(name = "symbol")
+    @Column(name = "amount")
+    private Map<String, Double> assets;
+
 }

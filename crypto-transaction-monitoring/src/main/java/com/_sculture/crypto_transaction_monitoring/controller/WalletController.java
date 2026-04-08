@@ -2,7 +2,7 @@ package com._sculture.crypto_transaction_monitoring.controller;
 
 import com._sculture.crypto_transaction_monitoring.dto.WalletDto;
 import com._sculture.crypto_transaction_monitoring.model.Wallet;
-import com._sculture.crypto_transaction_monitoring.service.WalletService;
+import com._sculture.crypto_transaction_monitoring.service.wallet.WalletService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 

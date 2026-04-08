@@ -1,4 +1,4 @@
-package com._sculture.crypto_transaction_monitoring.service;
+package com._sculture.crypto_transaction_monitoring.service.wallet;
 
 import com._sculture.crypto_transaction_monitoring.model.Wallet;
 
