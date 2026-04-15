@@ -18,7 +18,7 @@ public class Wallet {
     private Long id;
 
     @ElementCollection
-    @CollectionTable(name = "wallet")
+    @CollectionTable(name = "wallet_assets", joinColumns = @JoinColumn(name = "wallet_id"))
     @MapKeyColumn(name = "symbol")
     @Column(name = "amount")
     private Map<String, Double> assets;

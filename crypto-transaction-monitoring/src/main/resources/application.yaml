@@ -10,7 +10,6 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
-  api:
-    crypto-external-api:
-      base-url: ${CRYPTO_EXTERNAL_API_BASE_URL}
-      token: ${CRYPTO_EXTERNAL_API_TOKEN}
+  crypto-external-api:
+    base-url : ${CRYPTO_EXTERNAL_API_BASE_URL}
+    token : ${CRYPTO_EXTERNAL_API_TOKEN}

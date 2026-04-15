@@ -1,11 +1,12 @@
-# Crypto Transaction Monitoring
+# Real-Time Crypto Monitoring, Wallet & Alert System
 
-A Spring Boot application for monitoring cryptocurrency transactions. This project allows users to manage wallets and track their transaction history by integrating with external cryptocurrency APIs.
+A multi-component application for real-time monitoring of cryptocurrency wallets and transactions, featuring wallet management and a dedicated alert system built in Rust for risk assessment and notifications.
 
 ## Features
 
+- **Real-Time Monitoring**: Continuous tracking of cryptocurrency transactions and wallet activities.
 - **Wallet Management**: Create and retrieve wallet information.
-- **Transaction Monitoring**: Fetch and store transaction data from external crypto APIs.
+- **Alert System**: Rust-based module for risk scoring, analysis, and real-time alerts on crypto activity.
 - **REST API**: Provides endpoints for wallet operations.
 - **Database Integration**: Uses PostgreSQL for data persistence.
 - **Messaging**: Integrates with Kafka for event-driven processing.
@@ -19,6 +20,7 @@ A Spring Boot application for monitoring cryptocurrency transactions. This proje
 - PostgreSQL
 - Kafka
 - Maven
+- Rust
 
 ## Getting Started
 
@@ -28,6 +30,7 @@ A Spring Boot application for monitoring cryptocurrency transactions. This proje
 - Maven
 - PostgreSQL
 - Docker (optional, for containerized setup)
+- Rust (for the alert system component)
 
 ### Configuration
 

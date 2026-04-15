@@ -1,8 +1,20 @@
 -- Create Wallet table
 CREATE TABLE wallet (
-    id BIGSERIAL PRIMARY KEY,
-    address VARCHAR(255) NOT NULL,
-    balance DOUBLE PRECISION NOT NULL
+    id BIGSERIAL PRIMARY KEY
+);
+
+-- Create Wallet Assets table
+CREATE TABLE wallet_assets (
+    wallet_id BIGINT NOT NULL,
+    symbol VARCHAR(10) NOT NULL,
+    amount DOUBLE PRECISION,
+
+    PRIMARY KEY (wallet_id, symbol),
+
+    CONSTRAINT fk_wallet
+        FOREIGN KEY (wallet_id)
+        REFERENCES wallet(id)
+        ON DELETE CASCADE
 );
 
 -- Create Transaction table
@@ -16,8 +28,7 @@ CREATE TABLE transaction (
     FOREIGN KEY (wallet_id) REFERENCES wallet(id)
 );
 
--- Create index on wallet address for faster lookups
-CREATE INDEX idx_wallet_address ON wallet(address);
-
 -- Create index on transaction wallet_id for faster lookups
 CREATE INDEX idx_transaction_wallet_id ON transaction(wallet_id);
+
+commit;
