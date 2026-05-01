@@ -1,4 +1,15 @@
 spring:
+  config:
+    import: optional:file:.env
+  kafka:
+    #localhost:9092 on local machine
+    bootstrap-servers: kafka:9092
+    producer:
+      properties:
+        spring.json.add.type.headers: false
+        spring.json.trusted.packages: "*"
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
   application:
     name: crypto-transaction-monitoring
   datasource:
@@ -10,6 +21,6 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
-  crypto-external-api:
-    base-url : ${CRYPTO_EXTERNAL_API_BASE_URL}
-    token : ${CRYPTO_EXTERNAL_API_TOKEN}
+crypto:
+  url : ${CRYPTO_URL}
+  token : ${CRYPTO_TOKEN}

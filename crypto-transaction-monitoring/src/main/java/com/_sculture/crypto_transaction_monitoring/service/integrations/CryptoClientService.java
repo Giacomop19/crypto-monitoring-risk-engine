@@ -1,6 +1,7 @@
 package com._sculture.crypto_transaction_monitoring.service.integrations;
 
 import com._sculture.crypto_transaction_monitoring.config.CryptoApiConfig;
+import com._sculture.crypto_transaction_monitoring.dto.CryptoResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -31,11 +32,23 @@ public class CryptoClientService {
             HttpEntity<String> request = new HttpEntity<>(headers);
             String url = cryptoApiConfig.getBaseUrl() + "/getData?symbol=" + symbol;
 
-            ResponseEntity<Double> response = restTemplate.exchange(url, HttpMethod.GET, request, Double.class);
+            ResponseEntity<CryptoResponse> response = restTemplate.exchange(url, HttpMethod.GET, request, CryptoResponse.class);
 
-            if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
-                logger.info("Successfully fetched crypto data for symbol: {}", symbol);
-                return response.getBody();
+            if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null && "success".equals(response.getBody().getStatus())) {
+                if (!response.getBody().getSymbols().isEmpty()) {
+                    String lastPriceStr = response.getBody().getSymbols().get(0).getLast();
+                    try {
+                        Double lastPrice = Double.parseDouble(lastPriceStr);
+                        logger.info("Successfully fetched crypto data for symbol: {} - Price: {}", symbol, lastPrice);
+                        return lastPrice;
+                    } catch (NumberFormatException e) {
+                        logger.error("Invalid price format for symbol {}: {}", symbol, lastPriceStr);
+                        return null;
+                    }
+                } else {
+                    logger.warn("No symbols data for symbol {}", symbol);
+                    return null;
+                }
             } else {
                 logger.warn("Unexpected response status for symbol {}: {}", symbol, response.getStatusCode());
                 return null;

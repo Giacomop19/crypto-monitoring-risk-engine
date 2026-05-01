@@ -10,10 +10,10 @@ import org.springframework.web.client.RestTemplate;
 @Getter
 public class CryptoApiConfig {
 
-    @Value("$crypto-external-api.base-url")
+    @Value("${crypto.url}")
     private String baseUrl;
 
-    @Value("$crypto-external-api.token")
+    @Value("${crypto.token}")
     private String bearerToken;
 
     @Bean

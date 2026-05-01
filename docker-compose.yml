@@ -13,6 +13,27 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  zookeeper:
+    image: 'zookeeper'
+    container_name: crypto-zookeeper
+    restart: always
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+
+  kafka:
+    image: 'confluentinc/cp-kafka:7.7.8'
+    container_name: crypto-kafka
+    restart: always
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
   crypto-transaction-monitoring-app:
     build:
       context: crypto-transaction-monitoring/.
@@ -20,12 +41,15 @@ services:
     container_name: crypto-transaction-monitoring-app
     depends_on:
       - postgres
+      - kafka
     ports:
       - "8080:8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/crypto_db
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: password
+      CRYPTO_URL: https://api.freecryptoapi.com/v1
+      CRYPTO_TOKEN: 0jx708ofkbztaxprlxkd
 
 volumes:
   postgres_data:

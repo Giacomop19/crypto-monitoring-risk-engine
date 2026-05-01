@@ -3,6 +3,7 @@ package com._sculture.crypto_transaction_monitoring.service.wallet;
 import com._sculture.crypto_transaction_monitoring.model.Wallet;
 import com._sculture.crypto_transaction_monitoring.repository.WalletRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +17,7 @@ public class WalletServiceImpl implements WalletService {
         this.walletRepository = walletRepository;
     }
 
+    @Transactional
     public Wallet createWallet(Map<String, Double> assets) {
         Wallet wallet = Wallet.builder()
                 .assets(assets != null ? assets : new HashMap<>())
