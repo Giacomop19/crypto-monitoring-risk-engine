@@ -1,60 +1,145 @@
-# Real-Time Crypto Monitoring, Wallet & Alert System
+# Crypto Transaction Monitoring System
 
-A multi-component application for real-time monitoring of cryptocurrency wallets and transactions, featuring wallet management and a dedicated alert system built in Rust for risk assessment and notifications.
+A distributed, event-driven system for tracking cryptocurrency portfolios and performing real-time risk analysis.
 
-## Features
 
-- **Real-Time Monitoring**: Continuous tracking of cryptocurrency transactions and wallet activities.
-- **Wallet Management**: Create and retrieve wallet information.
-- **Alert System**: Rust-based module for risk scoring, analysis, and real-time alerts on crypto activity.
-- **REST API**: Provides endpoints for wallet operations.
-- **Database Integration**: Uses PostgreSQL for data persistence.
-- **Messaging**: Integrates with Kafka for event-driven processing.
-- **Caching**: Includes caching support for improved performance.
+## 🚀 Overview
 
-## Technologies Used
+This project demonstrates a **microservices architecture** using:
 
-- Java 17
-- Spring Boot 4.0.5
-- Spring Data JPA
+- Java (Spring Boot) for API and business logic
+- Apache Kafka for event streaming
+- Rust for high-performance risk analysis
+- Docker for containerized deployment
+
+
+
+## ⚙️ Architecture
+
+                        
+    ┌───────── ┐      ┌────────── ┐      ┌─────── ┐      ┌────────────────── ┐
+    | Client   | ---> | Java API  | ---> | Kafka  | ---> | Rust Risk Engine  |                           
+    └──────────┘      └───────────┘      └────────┘      └───────────────────┘
+
+### Flow:
+
+1. User requests portfolio evaluation
+2. Java service fetches crypto prices via external API
+3. Portfolio value is calculated
+4. Event is published to Kafka (`portfolio-events`)
+5. Rust service consumes event
+6. Risk analysis is performed asynchronously
+
+
+## ⚙️ Tech Stack
+
+### Backend
+- Java (Spring Boot)
 - PostgreSQL
-- Kafka
-- Maven
-- Rust
+- Kafka (event streaming)
 
-## Getting Started
+### Data Processing
+- Rust (rdkafka, tokio)
 
-### Prerequisites
+### Infrastructure
+- Docker & Docker Compose
 
-- Java 17
-- Maven
-- PostgreSQL
-- Docker (optional, for containerized setup)
-- Rust (for the alert system component)
+## 📦 Services
 
-### Configuration
+### 🟦 Java Service (Portfolio API)
+- Calculates portfolio value
+- Integrates with external crypto API
+- Publishes Kafka events
 
-Set the following environment variables:
+### 🟥 Rust Service (Risk Engine)
+- Consumes Kafka events
+- Performs risk analysis (portfolio concentration)
+- Logs insights
 
-- `CRYPTO_EXTERNAL_API_BASE_URL`: Base URL for the external crypto API
-- `CRYPTO_EXTERNAL_API_TOKEN`: API token for authentication
 
-### Running the Application
+## 📡 API Documentation
 
-1. Clone the repository.
-2. Navigate to the `crypto-transaction-monitoring` directory.
-3. Run `mvn spring-boot:run` or use Docker with `docker-compose up`.
+### Wallet APIs:
+### 🔹 Create Wallet
 
-### API Endpoints
+**POST** `/api/wallets`
 
-- `POST /api/wallets`: Create a new wallet
-- `GET /api/wallets/{id}`: Get wallet details
-- `GET /api/wallets/health`: Health check
+#### Request Body
 
-## Project Structure
+```json
+{
+  "assets": {
+    "BTC": 0.5,
+    "ETH": 2
+  }
+}
+```
 
-- `src/main/java`: Java source code
-- `src/main/resources`: Configuration files
-- `src/test`: Test code
-- `Dockerfile`: Docker configuration
-- `docker-compose.yml`: Multi-container setup
+### 🔹 Get Wallet by ID
+
+**GET** `/api/wallets/{id}`
+
+#### Path parameter
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| id   | Long | Wallet ID   |
+
+### Portfolio APIs:
+### 🔹 Calculate Portfolio Value
+
+**GET** `/api/wallets/{id}/portfolio`
+
+#### Path parameter
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| id   | Long | Wallet ID   |
+
+#### Response
+```json
+{
+  "totalValue": 25000,
+  "breakdown": {
+    "BTC": 20000,
+    "ETH": 5000
+  }
+}
+```
+
+### Kafka Event (produced)
+#### topic - (`portofolio-events`)
+```json
+{
+  "walletId": 1,
+  "totalValue": 25000,
+  "assets": {
+    "BTC": 20000,
+    "ETH": 5000
+  }
+}
+```
+
+### Rust Risk Engine (consumer)
+#### example output
+```json
+📥 Received event: PortfolioEvent { walletId: 1, totalValue: 25000.0, assets: {...} }
+
+⚠️ Risk Analysis:
+Total Value: 25000
+Max Asset Share: 80.00%
+
+🚨 HIGH RISK: Portfolio too concentrated!
+```
+
+
+## ▶️ Running the Project
+
+1. Clone the repo
+2. Configure a (`.env`) file with those properties
+CRYPTO_EXTERNAL_API_BASE_URL=https://api.freecryptoapi.com/v1
+CRYPTO_EXTERNAL_API_TOKEN=${your_token}
+3. Run with docker (`docker-compose up --build`)
+
+
+## Made by @Giacomo Pumapillo
