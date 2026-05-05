@@ -136,10 +136,11 @@ Max Asset Share: 80.00%
 ## ▶️ Running the Project
 
 1. Clone the repo
-2. Configure a (`.env`) file with those properties
-CRYPTO_URL=https://api.freecryptoapi.com/v1
+2. Configure a (`.env`) file with those properties <br>
+CRYPTO_URL=https://api.freecryptoapi.com/v1<br>
 CRYPTO_TOKEN=${your_token}
 3. Run with docker (`docker-compose up --build`)
+4. API TOKEN can be found at https://freecryptoapi.com
 
 
 ## Made by @Giacomo Pumapillo
