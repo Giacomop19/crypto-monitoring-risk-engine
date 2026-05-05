@@ -51,5 +51,11 @@ services:
       CRYPTO_URL: https://api.freecryptoapi.com/v1
       CRYPTO_TOKEN: 0jx708ofkbztaxprlxkd
 
+  risk-engine-core:
+    build: ./risk-engine-core
+    container_name: crypto-risk-engine
+    depends_on:
+      - kafka
+
 volumes:
   postgres_data:
